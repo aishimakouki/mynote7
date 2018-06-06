@@ -3,7 +3,8 @@ class NotesController < ApplicationController
   def index
     @note = Note.new
     #昇順だったら　：asc
-    @notes = Note.new_order.page(params[:page])
+    @q = Note.new_order.ransack(params[:q])
+    @notes = @q.result.page(params[:page])
   end
   def create
     @note = Note.new(note_params)
@@ -43,4 +44,5 @@ class NotesController < ApplicationController
      # ストロングパラメータはフォームで入力した内容を受け取る
     params.require(:note).permit(:title, :body, :user_id)
   end
+
 end
